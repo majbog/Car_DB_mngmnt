@@ -27,3 +27,7 @@ class Car(db.Model):
         self.model = model
         self.brand = brand
         self.info = info
+
+
+if __name__ == '__main__':
+    pass
