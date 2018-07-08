@@ -15,7 +15,7 @@ class CarDB(object):
         db.session.add(new_brand)
         db.session.commit()
         return jsonify(new_brand)
-       
+
     @app.route('/car/new', methods=['POST'])
     def create_car(self, brand, model, **info):
         new_car = Car(brand, model, **info)
