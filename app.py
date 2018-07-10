@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from models import Car, Brand
 
@@ -40,3 +40,31 @@ class CarDB(object):
             brand_data = {'id': brand.id, 'name': brand.name}
             output.append(brand_data)
         return jsonify(output)
+
+    @app.route('/car/<int:car_id>', methods=['DELETE'])
+    def car_delete(car_id):
+        car = Car.query.get(car_id)
+        if car in None:
+            return '404'
+        db.session.delete(car)
+        db.session.commit()
+        return 'The car has been deleted'
+
+    @app.route('/car/<int:car_id>', methods=['PUT'])
+    def car_update(car_id):
+        car = Car.query.get(car_id)
+        if car is None:
+            return '404'
+        model = request.json['model']
+        brand = request.json['brand']
+        info = request.json['info']
+        car.model = model
+        car.brand = brand
+        car.info = info
+        db.session.commit()
+        return "The requested update has been made"
+
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
